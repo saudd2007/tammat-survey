@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>بين النسيان والاطمئنان — استبيان علبة «تمّت»</title>
+  <!-- خطا Cairo و IBM Plex Sans Arabic لقراءة عربية واضحة ومريحة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Cairo', 'IBM Plex Sans Arabic', 'sans-serif'],
+            sans: ['IBM Plex Sans Arabic', 'Cairo', 'sans-serif'],
+          },
+          colors: {
+            canvas: '#F7F9FA',
+            surface: '#FFFFFF',
+            navy: '#1E3A5F',
+            tealCalm: '#0F766E',
+            mintBg: '#D1FAE5',
+            mintAccent: '#10B981',
+            coralBg: '#FFE4E6',
+            coralAccent: '#E11D48',
+          },
+          boxShadow: {
+            card: '0 8px 30px -12px rgba(30, 58, 95, 0.08)',
+            soft: '0 4px 16px -4px rgba(15, 118, 110, 0.14)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F7F9FA;
+      color: #1E293B;
+      font-family: 'IBM Plex Sans Arabic', 'Cairo', sans-serif;
+      scroll-behavior: smooth;
+    }
+    h1, h2, h3, .font-heading {
+      font-family: 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
+    }
+    .fade-in {
+      animation: fadeInUp 0.35s ease-out both;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .mech-switch {
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mech-switch:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-canvas text-slate-800 antialiased selection:bg-teal-100 selection:text-teal-900">
+
+  <!-- شريط التقدم العلوي الثابت -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200/80 shadow-xs">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex items-center justify-between gap-3 mb-2">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-teal-50 text-tealCalm font-bold text-base border border-teal-200/70">💊</span>
+          <span class="font-heading font-bold text-sm sm:text-base text-navy">مبادرة علبة «تمّت» • الالتزام الدوائي</span>
+        </div>
+        <span id="progress-text" class="text-xs sm:text-sm font-semibold text-tealCalm bg-teal-50 px-3 py-1 rounded-full">
+          نسبة الإنجاز: 0%
+        </span>
+      </div>
+      <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-l from-tealCalm to-emerald-500 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- الحاوية الرئيسية -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6">
+
+    <!-- بطاقة المقدمة الترحيبية -->
+    <section id="intro-card" class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-slate-200/70 fade-in">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 text-tealCalm text-xs sm:text-sm font-semibold mb-4">
+        <span>✨ استبيان تفاعلي • يستغرق دقيقتين فقط</span>
+      </div>
+      <h1 class="font-heading text-2xl sm:text-3xl font-extrabold text-navy leading-snug mb-3">
+        بين النسيان والاطمئنان: كيف نعيد تصميم تجربة الدواء لكبار السن؟
+      </h1>
+      <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-4">
+        تخيّل أن تقف أمام علبة دواء وتسأل نفسك بحيرة: <strong class="text-navy">«هل أخذت حبة اليوم أم لا؟»</strong>
+      </p>
+      <p class="text-slate-600 text-sm sm:text-base leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+        نعمل في مبادرة <strong class="text-navy">علبة «تمّت»</strong> على تطوير حل إنساني بسيط يريح كبار السن وأصحاب الأمراض المزمنة من قلق النسيان وتكرار الجرعات بدون تعقيد تقني. مشاركتك مجهولة الهوية وتساعدنا في تحسين التجربة لتكون أكثر ملاءمة ووضوحاً.
+      </p>
+    </section>
+
+    <!-- حاوية الأسئلة (تستخدم div بدلاً من form لمنع إعادة تحميل الصفحة تماماً) -->
+    <div id="survey-container" class="space-y-6">
+
+      <!-- القسم الأول: بطاقة التعريف السريعة -->
+      <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-slate-200/70 space-y-6 fade-in">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="w-9 h-9 rounded-2xl bg-navy text-white font-heading font-bold flex items-center justify-center text-base">١</span>
+          <div>
+            <h2 class="font-heading text-lg sm:text-xl font-bold text-navy">القسم الأول: بطاقة التعريف السريعة</h2>
+            <p class="text-xs sm:text-sm text-slate-500">لنفهم زاوية نظرك وطبيعة التعامل اليومي مع الأدوية</p>
+          </div>
+        </div>
+
+        <!-- السؤال 1 -->
+        <div class="space-y-3" data-question="q1">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            1. من أي زاوية تنظر لهذه التجربة؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q1" value="مريض يتناول أدوية يومية أو مزمنة" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">👴 أنا أتناول أدوية يومية أو مزمنة بنفسي</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q1" value="مرافق أو أحد أفراد الأسرة" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🤝 أساعد أو أرافق شخصاً من كبار السن أو أصحاب الأمراض المزمنة</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q1" value="مشارك عام / مهتم" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">💡 أشارك برأيي العام وتجربتي الشخصية</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار إجابة واحدة لهذا السؤال.</p>
+        </div>
+
+        <!-- السؤال 2 -->
+        <div class="space-y-3" data-question="q2">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            2. كم عدد الأدوية التي تتعامل معها يومياً؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q2" value="دواء واحد فقط" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-teal-50 text-tealCalm border border-teal-200/70 shrink-0" aria-hidden="true">
+                <!-- أيقونة كبسولة واحدة -->
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+                  <path d="m8.5 8.5 7 7" />
+                </svg>
+              </span>
+              <span class="text-base font-medium">دواء واحد</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q2" value="من 2 إلى 3 أدوية" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-teal-50 text-tealCalm border border-teal-200/70 shrink-0" aria-hidden="true">
+                <!-- أيقونة كبسولتين -->
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+                  <path d="m8.5 8.5 7 7" />
+                  <circle cx="6.5" cy="6.5" r="3" />
+                  <circle cx="17.5" cy="17.5" r="3" />
+                </svg>
+              </span>
+              <span class="text-base font-medium">من 2 إلى 3</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q2" value="4 أدوية أو أكثر" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-teal-50 text-tealCalm border border-teal-200/70 shrink-0" aria-hidden="true">
+                <!-- أيقونة علبة مقسمة لـ 4 أدوية أو أكثر -->
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="16" rx="3" />
+                  <path d="M3 12h18" />
+                  <path d="M9 4v16" />
+                  <path d="M15 4v16" />
+                </svg>
+              </span>
+              <span class="text-base font-medium">4 أو أكثر</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى تحديد عدد الأدوية اليومية.</p>
+        </div>
+      </section>
+
+      <!-- القسم الثاني: مواقف من الواقع -->
+      <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-slate-200/70 space-y-7 fade-in">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="w-9 h-9 rounded-2xl bg-navy text-white font-heading font-bold flex items-center justify-center text-base">٢</span>
+          <div>
+            <h2 class="font-heading text-lg sm:text-xl font-bold text-navy">القسم الثاني: مواقف من الواقع</h2>
+            <p class="text-xs sm:text-sm text-slate-500">سيناريوهات يومية تكشف لحظات النسيان والشك والشعور بالاستقلالية</p>
+          </div>
+        </div>
+
+        <!-- السؤال 3 -->
+        <div class="space-y-3" data-question="q3">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            3. تخيّل هذا الموقف: حان وقت الدواء، ما أول شيء يحدث عادةً؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q3" value="روتين ثابت (صلاة أو وجبة)" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">⏰ تذكّره تلقائياً مع روتين ثابت (بعد الصلاة أو الوجبة)</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q3" value="منبه الجوال" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">📱 رنّة منبه الجوال (لكن أحياناً يُغلق ويُنسى أخذ الحبة!)</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q3" value="سؤال الأسرة" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🗣️ سؤال من أحد أفراد الأسرة: «أخذت دواك؟»</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q3" value="يمر الوقت دون انتباه" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🌫️ يمر الوقت دون انتباه إلا بعد فوات الأوان</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار سيناريو واحد.</p>
+        </div>
+
+        <!-- السؤال 4 -->
+        <div class="space-y-3" data-question="q4">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            4. ما أكثر «لحظة حيرة» تتكرر في موضوع الأدوية؟ <span class="text-xs font-normal text-slate-500">(يمكن اختيار أكثر من خيار)</span> <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q4" value="لحظة الشك في أخذ الجرعة" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">❓ <strong>لحظة الشك:</strong> مسك العلبة والتساؤل «هل أخذت الجرعة اليوم أم نسيت؟»</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q4" value="نسيان جرعة المساء" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">🌙 <strong>جرعة المساء:</strong> النوم مبكراً أو الانشغال ونسيان جرعة الليل</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q4" value="تشابه العلب والمواعيد" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">🔄 <strong>تشابه العلب:</strong> صعوبة التمييز السريع بين دواء الصباح ودواء المساء</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q4" value="تغيّر الروتين أو السفر" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">✈️ <strong>تغيّر الروتين:</strong> الخروج من المنزل أو السفر يربك الجدول بالكامل</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q4" value="عائق التقنية وصغر الخط" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">📵 <strong>عائق التقنية:</strong> صغر الخط أو صعوبة التعامل مع تطبيقات التذكير</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار لحظة واحدة على الأقل.</p>
+        </div>
+
+        <!-- السؤال 5: مقياس خطي من 1 إلى 5 -->
+        <div class="space-y-3" data-question="q5">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            5. على مقياس من 1 إلى 5، ما مدى شعور المريض بالضيق أو الإحراج عند تذكيره المستمر بالدواء من قِبل الآخرين؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-4 sm:p-5">
+            <div class="grid grid-cols-5 gap-2 sm:gap-3" role="radiogroup" aria-label="مقياس الشعور بالضيق من 1 إلى 5">
+              <label class="group relative flex flex-col items-center justify-center py-3.5 px-2 rounded-2xl border-2 border-slate-200 bg-white hover:border-tealCalm cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50">
+                <input type="radio" name="q5" value="1" class="sr-only" />
+                <span class="font-heading font-extrabold text-lg sm:text-xl text-navy group-has-[:checked]:text-tealCalm">1</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">بسيط</span>
+              </label>
+              <label class="group relative flex flex-col items-center justify-center py-3.5 px-2 rounded-2xl border-2 border-slate-200 bg-white hover:border-tealCalm cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50">
+                <input type="radio" name="q5" value="2" class="sr-only" />
+                <span class="font-heading font-extrabold text-lg sm:text-xl text-navy group-has-[:checked]:text-tealCalm">2</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">خفيف</span>
+              </label>
+              <label class="group relative flex flex-col items-center justify-center py-3.5 px-2 rounded-2xl border-2 border-slate-200 bg-white hover:border-tealCalm cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50">
+                <input type="radio" name="q5" value="3" class="sr-only" />
+                <span class="font-heading font-extrabold text-lg sm:text-xl text-navy group-has-[:checked]:text-tealCalm">3</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">متوسط</span>
+              </label>
+              <label class="group relative flex flex-col items-center justify-center py-3.5 px-2 rounded-2xl border-2 border-slate-200 bg-white hover:border-tealCalm cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50">
+                <input type="radio" name="q5" value="4" class="sr-only" />
+                <span class="font-heading font-extrabold text-lg sm:text-xl text-navy group-has-[:checked]:text-tealCalm">4</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">ملحوظ</span>
+              </label>
+              <label class="group relative flex flex-col items-center justify-center py-3.5 px-2 rounded-2xl border-2 border-slate-200 bg-white hover:border-tealCalm cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50">
+                <input type="radio" name="q5" value="5" class="sr-only" />
+                <span class="font-heading font-extrabold text-lg sm:text-xl text-navy group-has-[:checked]:text-tealCalm">5</span>
+                <span class="text-[11px] text-slate-500 mt-0.5">عالي جداً</span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between text-xs sm:text-sm text-slate-600 mt-3 pt-2 border-t border-slate-200/60">
+              <span>1: يتقبله بكل رحابة صدر</span>
+              <span>5: يشعر وكأنه مراقَب أو يفقد استقلاليته</span>
+            </div>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار درجة على المقياس من 1 إلى 5.</p>
+        </div>
+      </section>
+
+      <!-- القسم الثالث: اختبر فكرة «علبة تمّت» معنا! -->
+      <section class="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-teal-200/80 space-y-7 fade-in">
+        <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+          <span class="w-9 h-9 rounded-2xl bg-tealCalm text-white font-heading font-bold flex items-center justify-center text-base">٣</span>
+          <div>
+            <h2 class="font-heading text-lg sm:text-xl font-bold text-navy">القسم الثالث: اختبر فكرة «علبة تمّت» معنا! 🛠️</h2>
+            <p class="text-xs sm:text-sm text-slate-500">علبة أدوية بمؤشر ميكانيكي بصري — بدون شاشة وبدون إنترنت وبدون شحن</p>
+          </div>
+        </div>
+
+        <!-- مجسم تفاعلي مصغّر لـ «علبة تمّت» -->
+        <div class="bg-gradient-to-br from-teal-50/70 via-white to-slate-50 rounded-2xl p-5 sm:p-6 border border-teal-200/70 space-y-5">
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="font-heading font-extrabold text-lg sm:text-xl text-navy">
+                نموذج تجريبي مصغّر لـ «علبة تمّت»
+              </h3>
+              <button
+                type="button"
+                id="reset-demo-btn"
+                class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl bg-white text-navy border border-slate-300 hover:bg-slate-100 active:scale-95 transition cursor-pointer shadow-2xs"
+              >
+                <span>🔄</span>
+                <span>إعادة ضبط اليوم الجديد</span>
+              </button>
+            </div>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+              جرّب الضغط على زر المؤشر الميكانيكي في كل فترة لتبديل حالتها بين <strong class="text-coralAccent">لم تُؤخذ</strong> و<strong class="text-emerald-700">تمّت ✅</strong> كما يراها المستخدم بنظرة واحدة:
+            </p>
+          </div>
+
+          <!-- خانات الفترات الثلاث التفاعلية -->
+          <div id="tammat-demo-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5"></div>
+
+          <!-- شريط حالة اليوم التفاعلي -->
+          <div id="demo-status-summary" class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm bg-white px-4 py-3 rounded-xl border border-slate-200/80 text-slate-700">
+            <span>الحالة الحالية: <strong id="taken-count-label" class="text-navy">0 من 3 جرعات مؤكدة</strong></span>
+            <span id="demo-hint-badge" class="text-tealCalm font-medium">اضغط على أي خانة لتجربة المؤشر</span>
+          </div>
+        </div>
+
+        <!-- السؤال 6 -->
+        <div class="space-y-3" data-question="q6">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            6. لو كانت «علبة تمّت» أمامك الآن، هل تحل مشكلة الشك في أخذ الجرعة؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q6" value="نعم، تحلها من الجذور وبوضوح تام" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">✅ نعم، تحلها من الجذور وبوضوح تام</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q6" value="تساعد بشكل جيد مع بعض الإضافات" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">👍 تساعد بشكل جيد، لكن تحتاج لبعض الإضافات</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q6" value="ربما تفيد فئة معينة فقط" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🤔 ربما تفيد فئة معينة فقط</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q6" value="لا أعتقد أنها ستحدث فرقاً" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">❌ لا أعتقد أنها ستحدث فرقاً</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار تقييمك للفكرة.</p>
+        </div>
+
+        <!-- السؤال 7 -->
+        <div class="space-y-3" data-question="q7">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            7. ما أكثر تفصيلة جذبتك في تصميم «علبة تمّت»؟ <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q7" value="لغة الألوان الفورية (أحمر / أخضر)" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🎨 <strong>لغة الألوان الفورية:</strong> الأحمر والأخضر يغنيان عن القراءة والتخمين</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q7" value="خالية من التقنية والبطارية" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">🔋 <strong>خالية من التقنية:</strong> لا تحتاج جوالاً ولا بطارية ولا إعدادات معقدة</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q7" value="تعزيز الاستقلالية والثقة" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">👑 <strong>تعزيز الاستقلالية:</strong> تمنح كبير السن الثقة لإدارة دوائه بنفسه دون إحراج</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="radio" name="q7" value="وضوح الرموز والفترات" class="w-5 h-5 accent-teal-700 shrink-0" />
+              <span class="text-base">👁️ <strong>وضوح الرموز والحجم:</strong> مريحة للنظر وسهلة الاستخدام</span>
+            </label>
+          </div>
+          <p class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار أكثر تفصيلة جذبتك.</p>
+        </div>
+
+        <!-- السؤال 8: تحسينات التصميم + خيار أخرى -->
+        <div class="space-y-3" data-question="q8">
+          <label class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            8. لو كنت مكان المصمم، ما اللمسة الإضافية التي ستجعل هذه العلبة مثالية؟ <span class="text-xs font-normal text-slate-500">(يمكن اختيار أكثر من خيار)</span> <span class="text-coralAccent">*</span>
+          </label>
+          <div class="grid grid-cols-1 gap-2.5">
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q8" value="صوت نقرة ميكانيكية واضحة" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">🔊 صوت «نقرة» ميكانيكية واضحة عند تحريك المؤشر للأخضر</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q8" value="مغناطيس خلفي للتثبيت" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">🧲 مغناطيس خلفي لتثبيتها على الثلاجة أو مكان بارز في المنزل</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q8" value="حجم مدمج للحقيبة أو الجيب" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">👜 حجم مدمج يسهل وضعه في الجيب أو الحقيبة عند الخروج</span>
+            </label>
+            <label class="flex items-center gap-3 p-4 rounded-2xl border border-slate-200 hover:border-tealCalm hover:bg-teal-50/40 cursor-pointer transition has-[:checked]:border-tealCalm has-[:checked]:bg-teal-50/60">
+              <input type="checkbox" name="q8" value="مساحة قابلة للكتابة والمسح لاسم الدواء" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+              <span class="text-base">✍️ مساحة قابلة للمسح لكتابة اسم الدواء بخط كبير</span>
+            </label>
+            <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-3">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" id="q8-other-checkbox" name="q8" value="أخرى" class="w-5 h-5 rounded accent-teal-700 shrink-0" />
+                <span class="text-base font-medium">➕ أخرى (اكتب اقتراحك المميز هنا)</span>
+              </label>
+              <input
+                type="text"
+                id="q8-other-input"
+                placeholder="مثال: تنبيه ضوئي خافت جداً أو قفل سهل لكبار السن..."
+                disabled
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-sm sm:text-base focus:outline-none focus:border-tealCalm disabled:bg-slate-100 disabled:text-slate-400 transition"
+              />
+            </div>
+          </div>
+          <p id="q8-error" class="error-msg hidden text-sm text-coralAccent font-medium">يرجى اختيار لمسة واحدة على الأقل أو كتابة اقتراحك.</p>
+        </div>
+
+        <!-- السؤال 9: مساحة حرة اختيارية -->
+        <div class="space-y-3" data-question="q9">
+          <label for="q9-textarea" class="block font-heading font-bold text-base sm:text-lg text-slate-800">
+            9. مساحة حرة لأفكارك أو موقف واقعي: <span class="text-xs font-normal text-slate-500">(اختياري)</span>
+          </label>
+          <p class="text-xs sm:text-sm text-slate-500">
+            هل لديك موقف طريف أو صعب مرّ بك أو بأحد أقاربك مع نسيان الأدوية؟ شاركنا إياه بكلمات بسيطة.
+          </p>
+          <textarea
+            id="q9-textarea"
+            name="q9"
+            rows="3"
+            placeholder="اكتب ملاحظتك أو تجربتك هنا..."
+            class="w-full p-4 rounded-2xl border border-slate-200 bg-white text-base focus:outline-none focus:border-tealCalm transition resize-y"
+          ></textarea>
+        </div>
+      </section>
+
+      <!-- تنبيه عام عند وجود حقول ناقصة -->
+      <div id="form-global-alert" class="hidden rounded-2xl bg-coralBg border border-rose-200 text-rose-900 p-4 text-sm sm:text-base font-medium">
+        ⚠️ بعض الأسئلة الإلزامية لم تُجب بعد. تم تمييزها لتتمكن من إكمالها بسهولة.
+      </div>
+
+      <!-- أزرار الإرسال وإعادة التعيين (type="button" لمنع أي إعادة تحميل) -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+        <button
+          type="button"
+          id="clear-form-btn"
+          class="px-5 py-3.5 rounded-2xl border border-slate-300 bg-white text-slate-700 font-heading font-bold text-base hover:bg-slate-100 active:scale-[0.99] transition cursor-pointer"
+        >
+          تفريغ الإجابات
+        </button>
+        <button
+          type="button"
+          id="submit-survey-btn"
+          class="flex-1 sm:flex-initial px-8 py-3.5 rounded-2xl bg-tealCalm hover:bg-teal-800 text-white font-heading font-bold text-base sm:text-lg shadow-soft active:scale-[0.99] transition cursor-pointer"
+        >
+          إرسال الإجابات وعرض الملخص ✨
+        </button>
+      </div>
+    </div>
+
+    <!-- بطاقة ملخص الردود والرؤى (تظهر بعد الإرسال في نفس الصفحة بدون أي إعادة تحميل) -->
+    <section id="summary-section" class="hidden bg-white rounded-3xl p-6 sm:p-8 shadow-card border-2 border-tealCalm/40 space-y-6 fade-in">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-mintBg text-emerald-900 text-xs font-bold mb-2">
+            ✅ تم تسجيل إجاباتك بنجاح
+          </span>
+          <h2 class="font-heading text-xl sm:text-2xl font-extrabold text-navy">
+            ملخص الردود والملاحظات المستخلصة
+          </h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            id="copy-summary-btn"
+            class="px-4 py-2.5 rounded-xl bg-teal-50 hover:bg-teal-100 text-tealCalm border border-teal-200 font-heading font-bold text-sm transition cursor-pointer"
+          >
+            📋 نسخ ملخص الإجابات
+          </button>
+          <button
+            type="button"
+            id="edit-answers-btn"
+            class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-heading font-bold text-sm transition cursor-pointer"
+          >
+            ✏️ تعديل الإجابات
+          </button>
+        </div>
+      </div>
+
+      <!-- رسالة تأكيد النسخ -->
+      <div id="copy-feedback" class="hidden rounded-xl bg-mintBg/70 border border-emerald-200 text-emerald-900 px-4 py-2.5 text-sm font-medium">
+        ✅ تم نسخ ملخص الإجابات إلى الحافظة! يمكنك لصقه ومشاركته الآن.
+      </div>
+
+      <!-- بطاقة خلاصة سريعة مستخلصة من إجابة المشارك -->
+      <div id="design-insight-box" class="rounded-2xl bg-teal-50/80 border border-teal-200/80 p-4 sm:p-5 text-sm sm:text-base text-slate-800 leading-relaxed"></div>
+
+      <!-- جدول تفصيلي للإجابات -->
+      <div id="answers-summary-list" class="space-y-3"></div>
+    </section>
+
+  </main>
+
+  <!-- تذييل الصفحة -->
+  <footer class="max-w-3xl mx-auto px-4 sm:px-6 pb-10 pt-2 text-center text-xs sm:text-sm text-slate-500">
+    مبادرة <strong class="text-navy">علبة «تمّت»</strong> — لتعزيز الالتزام الدوائي واستقلالية كبار السن
+  </footer>
+
+  <script>
+    (function () {
+      // 1. إعداد المجسم التفاعلي لـ «علبة تمّت»
+      const slotsState = [
+        { id: 'morning', title: 'فترة الصباح', icon: '☀️', timeHint: 'بعد الإفطار', taken: false },
+        { id: 'noon', title: 'فترة الظهر', icon: '🌤️', timeHint: 'وقت الظهيرة', taken: false },
+        { id: 'evening', title: 'فترة المساء', icon: '🌙', timeHint: 'قبل النوم', taken: false },
+      ];
+
+      const demoGrid = document.getElementById('tammat-demo-grid');
+      const takenCountLabel = document.getElementById('taken-count-label');
+      const demoHintBadge = document.getElementById('demo-hint-badge');
+      const resetDemoBtn = document.getElementById('reset-demo-btn');
+
+      function renderTammatBox() {
+        demoGrid.innerHTML = '';
+        let takenCount = 0;
+
+        slotsState.forEach((slot, index) => {
+          if (slot.taken) takenCount++;
+
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.setAttribute('aria-pressed', slot.taken ? 'true' : 'false');
+          card.className = slot.taken
+            ? 'mech-switch flex flex-col justify-between p-4 rounded-2xl border-2 border-mintAccent bg-mintBg/60 text-right cursor-pointer shadow-xs'
+            : 'mech-switch flex flex-col justify-between p-4 rounded-2xl border-2 border-coralAccent/60 bg-coralBg/55 text-right cursor-pointer shadow-xs hover:border-coralAccent';
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="text-2xl" aria-hidden="true">${slot.icon}</span>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full ${
+                slot.taken
+                  ? 'bg-emerald-700 text-white'
+                  : 'bg-rose-600 text-white'
+              }">
+                ${slot.taken ? 'تمّت ✅' : 'لم تُؤخذ'}
+              </span>
+            </div>
+            <div class="mb-3">
+              <div class="font-heading font-extrabold text-base sm:text-lg text-navy">${slot.title}</div>
+              <div class="text-xs text-slate-600">${slot.timeHint}</div>
+            </div>
+            <div class="w-full py-2 px-3 rounded-xl text-center text-xs sm:text-sm font-heading font-bold ${
+              slot.taken
+                ? 'bg-white text-emerald-800 border border-emerald-300'
+                : 'bg-white text-rose-700 border border-rose-200'
+            }">
+              ${slot.taken ? 'اضغط للتراجع' : 'حرّك المؤشر إلى تمّت'}
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            slotsState[index].taken = !slotsState[index].taken;
+            renderTammatBox();
+          });
+
+          demoGrid.appendChild(card);
+        });
+
+        takenCountLabel.textContent = `${takenCount} من 3 جرعات مؤكدة`;
+        if (takenCount === 3) {
+          demoHintBadge.textContent = '🎉 اكتملت جميع جرعات اليوم بأمان!';
+          demoHintBadge.className = 'text-emerald-700 font-bold';
+        } else if (takenCount > 0) {
+          demoHintBadge.textContent = 'واضح بنظرة واحدة ما تم أخذه وما تبقى';
+          demoHintBadge.className = 'text-tealCalm font-medium';
+        } else {
+          demoHintBadge.textContent = 'اضغط على أي خانة لتجربة المؤشر';
+          demoHintBadge.className = 'text-tealCalm font-medium';
+        }
+      }
+
+      resetDemoBtn.addEventListener('click', () => {
+        slotsState.forEach((s) => (s.taken = false));
+        renderTammatBox();
+      });
+
+      renderTammatBox();
+
+      // 2. إدارة شريط التقدم وحقل "أخرى" في السؤال 8
+      const surveyContainer = document.getElementById('survey-container');
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      const otherCheckbox = document.getElementById('q8-other-checkbox');
+      const otherInput = document.getElementById('q8-other-input');
+      const requiredKeys = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'];
+
+      otherCheckbox.addEventListener('change', () => {
+        otherInput.disabled = !otherCheckbox.checked;
+        if (otherCheckbox.checked) {
+          otherInput.focus();
+        } else {
+          otherInput.value = '';
+        }
+        updateProgress();
+      });
+
+      function isQuestionAnswered(qName) {
+        if (qName === 'q4') {
+          return document.querySelectorAll('input[name="q4"]:checked').length > 0;
+        }
+        if (qName === 'q8') {
+          const checked = Array.from(document.querySelectorAll('input[name="q8"]:checked'));
+          if (checked.length === 0) return false;
+          if (otherCheckbox.checked && otherInput.value.trim() === '') return false;
+          return true;
+        }
+        return document.querySelector(`input[name="${qName}"]:checked`) !== null;
+      }
+
+      function updateProgress() {
+        let answeredCount = 0;
+        requiredKeys.forEach((key) => {
+          if (isQuestionAnswered(key)) {
+            answeredCount++;
+            const block = document.querySelector(`[data-question="${key}"]`);
+            if (block) {
+              const err = block.querySelector('.error-msg');
+              if (err) err.classList.add('hidden');
+            }
+          }
+        });
+        const percent = Math.round((answeredCount / requiredKeys.length) * 100);
+        progressBar.style.width = `${percent}%`;
+        progressText.textContent = `نسبة الإنجاز: ${percent}%`;
+      }
+
+      surveyContainer.addEventListener('change', updateProgress);
+      otherInput.addEventListener('input', updateProgress);
+
+      // 3. معالجة الإرسال وعرض الملخص في نفس الصفحة دون أي إعادة تحميل
+      const submitBtn = document.getElementById('submit-survey-btn');
+      const clearFormBtn = document.getElementById('clear-form-btn');
+      const editAnswersBtn = document.getElementById('edit-answers-btn');
+      const copySummaryBtn = document.getElementById('copy-summary-btn');
+      const copyFeedback = document.getElementById('copy-feedback');
+      const globalAlert = document.getElementById('form-global-alert');
+      const summarySection = document.getElementById('summary-section');
+      const answersSummaryList = document.getElementById('answers-summary-list');
+      const insightBox = document.getElementById('design-insight-box');
+
+      let lastFormattedSummaryText = '';
+
+      submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        let firstInvalidEl = null;
+
+        requiredKeys.forEach((key) => {
+          const block = document.querySelector(`[data-question="${key}"]`);
+          const err = block ? block.querySelector('.error-msg') : null;
+          if (!isQuestionAnswered(key)) {
+            if (err) err.classList.remove('hidden');
+            if (!firstInvalidEl) firstInvalidEl = block;
+          } else if (err) {
+            err.classList.add('hidden');
+          }
+        });
+
+        if (firstInvalidEl) {
+          globalAlert.classList.remove('hidden');
+          firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        globalAlert.classList.add('hidden');
+
+        // جمع البيانات
+        const q1Val = document.querySelector('input[name="q1"]:checked').value;
+        const q2Val = document.querySelector('input[name="q2"]:checked').value;
+        const q3Val = document.querySelector('input[name="q3"]:checked').value;
+        const q4Vals = Array.from(document.querySelectorAll('input[name="q4"]:checked')).map((el) => el.value);
+        const q5Val = document.querySelector('input[name="q5"]:checked').value;
+        const q6Val = document.querySelector('input[name="q6"]:checked').value;
+        const q7Val = document.querySelector('input[name="q7"]:checked').value;
+        const q8Vals = Array.from(document.querySelectorAll('input[name="q8"]:checked')).map((el) => {
+          if (el.value === 'أخرى') {
+            return `أخرى: ${otherInput.value.trim()}`;
+          }
+          return el.value;
+        });
+        const q9Val = document.getElementById('q9-textarea').value.trim();
+
+        const independenceNote =
+          Number(q5Val) >= 4
+            ? 'أشرت إلى درجة مرتفعة من الحساسية تجاه التذكير المتكرر، مما يعزز أهمية المؤشر البصري المستقل لـ «علبة تمّت» دون إحراج أو مراقبة.'
+            : 'تؤكد إجابتك أهمية التوازن بين الوضوح البصري والراحة النفسية لكبار السن والأسرة.';
+
+        insightBox.innerHTML = `
+          <div class="font-heading font-bold text-navy mb-1">💡 خلاصة سريعة من إجاباتك:</div>
+          <p>${independenceNote} أبرز ما جذبك في التصميم هو <strong>«${q7Val}»</strong>، وتقييمك لأثر العلبة في إزالة الشك: <strong>«${q6Val}»</strong>.</p>
+        `;
+
+        const summaryRows = [
+          { label: '1. صفة المشارك', value: q1Val },
+          { label: '2. عدد الأدوية اليومية', value: q2Val },
+          { label: '3. طريقة التذكّر المعتادة', value: q3Val },
+          { label: '4. أبرز لحظات الحيرة والنسيان', value: q4Vals.join(' • ') },
+          { label: '5. درجة الضيق من التذكير المستمر', value: `${q5Val} من 5` },
+          { label: '6. مدى حل «علبة تمّت» لمشكلة الشك', value: q6Val },
+          { label: '7. أكثر ميزة جاذبة في التصميم', value: q7Val },
+          { label: '8. اللمسات الإضافية المقترحة', value: q8Vals.join(' • ') },
+        ];
+
+        if (q9Val) {
+          summaryRows.push({ label: '9. ملاحظة أو تجربة شخصية', value: q9Val });
+        }
+
+        answersSummaryList.innerHTML = summaryRows
+          .map(
+            (row) => `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+              <div class="text-xs sm:text-sm font-bold text-tealCalm mb-1">${row.label}</div>
+              <div class="text-sm sm:text-base font-medium text-navy">${row.value}</div>
+            </div>
+          `
+          )
+          .join('');
+
+        lastFormattedSummaryText =
+          '📋 ملخص استبيان مبادرة علبة «تمّت»:\n' +
+          summaryRows.map((r) => `- ${r.label}: ${r.value}`).join('\n');
+
+        // إخفاء الأسئلة وإظهار الملخص بسلاسة
+        surveyContainer.classList.add('hidden');
+        copyFeedback.classList.add('hidden');
+        summarySection.classList.remove('hidden');
+        window.scrollTo({ top: summarySection.offsetTop - 80, behavior: 'smooth' });
+      });
+
+      // زر نسخ ملخص الإجابات (متوافق مع القيود عبر execCommand)
+      copySummaryBtn.addEventListener('click', () => {
+        if (!lastFormattedSummaryText) return;
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = lastFormattedSummaryText;
+        tempTextarea.style.position = 'fixed';
+        tempTextarea.style.opacity = '0';
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        try {
+          document.execCommand('copy');
+          copyFeedback.classList.remove('hidden');
+        } catch (err) {
+          copyFeedback.textContent = '⚠️ تعذر النسخ التلقائي، يمكنك تحديد النص ونسخه يدوياً.';
+          copyFeedback.classList.remove('hidden');
+        }
+        document.body.removeChild(tempTextarea);
+      });
+
+      // زر تعديل الإجابات
+      editAnswersBtn.addEventListener('click', () => {
+        summarySection.classList.add('hidden');
+        surveyContainer.classList.remove('hidden');
+        window.scrollTo({ top: surveyContainer.offsetTop - 80, behavior: 'smooth' });
+      });
+
+      // زر تفريغ الإجابات
+      clearFormBtn.addEventListener('click', () => {
+        document.querySelectorAll('#survey-container input[type="radio"], #survey-container input[type="checkbox"]').forEach((input) => {
+          input.checked = false;
+        });
+        document.getElementById('q9-textarea').value = '';
+        otherInput.value = '';
+        otherInput.disabled = true;
+        globalAlert.classList.add('hidden');
+        document.querySelectorAll('.error-msg').forEach((el) => el.classList.add('hidden'));
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
